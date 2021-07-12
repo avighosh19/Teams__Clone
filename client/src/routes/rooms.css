@@ -1,0 +1,166 @@
+* {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+#videoDiv {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  background-color: #e8edf5;
+  border: 1px solid #e8edf5;
+  width: 80vw;
+  height: 80vh;
+  border-radius: 2%;
+  margin-bottom: 2px;
+  margin-right: 2px;
+}
+
+video {
+  width: 25vw;
+  height: 35vh;
+
+  object-fit: cover;
+  border-radius: 10%;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.meet_head {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+
+  width: 80vw;
+
+  border-radius: 2%;
+  margin-bottom: 2px;
+}
+
+.meet_head_right {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  background-color: #e8edf5;
+  border: 1px solid #e8edf5;
+  padding: 2px;
+}
+
+.meet_head_left {
+  flex: 0.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mainss {
+  height: 100vh;
+  display: flex;
+}
+.main__left {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+}
+.main__right {
+  flex: 0.2;
+}
+.main__videos {
+  flex-grow: 1;
+
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+}
+.main__controls {
+  background-color: #e8edf5;
+  color: #464775;
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.circle {
+  border-radius: 50px;
+  background-color: #ffff;
+  box-shadow: 0px 10px -14px 14px #fff;
+  padding: 15px;
+}
+.main__controls__block {
+  display: flex;
+}
+
+.main__controls__button {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  padding: 8px 10px;
+  min-width: 80px;
+  cursor: pointer;
+}
+.main__controls__button i {
+  font-size: 24px;
+}
+
+.leave_meeting {
+  color: #eb534b;
+}
+
+.main__controls__button:hover {
+  background-color: #343434;
+  border-radius: 5px;
+}
+
+.main__right {
+  display: flex;
+  flex-direction: column;
+  background-color: #eff3f8;
+  border-left: 1px solid #eff3f8;
+  margin: 20px 20px 10px 0px;
+  border-radius: 2%;
+}
+
+.main__header {
+  padding-top: 5px;
+  color: #000;
+  text-align: center;
+  height: 80vh;
+}
+
+.main__chat_window {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.messages {
+  color: rgb(31, 29, 29);
+  list-style: none;
+}
+
+.main__message_container {
+  padding: 22px 12px;
+  display: flex;
+}
+
+.main__message_container input {
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  color: #8f8f8f;
+}
+.unmute,
+.stop {
+  color: #eb534b;
+}
+
+.present {
+  color: #4b53bce5;
+}
