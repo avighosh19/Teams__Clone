@@ -8,7 +8,7 @@ const Navbar = (props) => {
 
   const logout = async () => {
     try {
-      const res = await fetch("http://localhost:8000/logout", {
+      const res = await fetch("/logout", {
         credentials: "include",
       });
       const data = res.json();
@@ -38,7 +38,6 @@ const Navbar = (props) => {
       <ul className="sidenav" id="mobile-demo">
         {menu}
       </ul>
-      <div>{props.children}</div>
     </div>
   );
 };

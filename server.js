@@ -56,6 +56,11 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.emit("your id", socket.id);
+  socket.on("send message", (body) => {
+    io.emit("message", body);
+  });
+
   socket.on("disconnect", () => {
     const roomID = socketToRoom[socket.id];
     let room = users[roomID];
@@ -63,6 +68,7 @@ io.on("connection", (socket) => {
       room = room.filter((id) => id !== socket.id);
       users[roomID] = room;
     }
+    socket.broadcast.emit("user left", socket.id);
   });
 });
 const mongoDB =

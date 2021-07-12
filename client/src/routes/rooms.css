@@ -5,6 +5,7 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #6f7bfff1;
 }
 #videoDiv {
   display: flex;
@@ -12,8 +13,8 @@ body {
   align-content: center;
   flex-wrap: wrap;
   background-color: #e8edf5;
-  border: 1px solid #e8edf5;
-  width: 80vw;
+  border: 1px solid #cdd1ff;
+  width: 78vw;
   height: 80vh;
   border-radius: 2%;
   margin-bottom: 2px;
@@ -47,8 +48,9 @@ video {
   display: flex;
   flex-direction: column;
   background-color: #e8edf5;
-  border: 1px solid #e8edf5;
+  border: 1px solid #cdd1ff8a;
   padding: 2px;
+  border-radius: 20px;
 }
 
 .meet_head_left {
@@ -81,10 +83,12 @@ video {
   background-color: #e8edf5;
   color: #464775;
   border-radius: 20px;
-
+  border: 1px solid #cdd1ffa4;
   display: flex;
+  width: 78.5vw;
   justify-content: center;
   align-content: center;
+  margin-left: 10px;
 }
 
 .circle {
@@ -121,18 +125,21 @@ video {
 
 .main__right {
   display: flex;
+  height: 100vh;
   flex-direction: column;
-  background-color: #eff3f8;
-  border-left: 1px solid #eff3f8;
+  background-color: #464775;
+  border-left: 1px solid #464775;
+
   margin: 20px 20px 10px 0px;
-  border-radius: 2%;
+  border-radius: 20px;
 }
 
 .main__header {
   padding-top: 5px;
-  color: #000;
+  color: #fff;
+
   text-align: center;
-  height: 80vh;
+  height: 10vh;
 }
 
 .main__chat_window {

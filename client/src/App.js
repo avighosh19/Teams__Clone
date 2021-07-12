@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import NoMatch from "./components/layout/404/404";
 import Room from "./routes/Room";
 import Chat from "./components/chat/Chat";
 import Home from "./components/home/Home";
@@ -40,6 +40,10 @@ function App() {
           <Route path="/login" component={Login} />
 
           <Route path="/video/room/:roomID" component={Room} />
+
+          <Route path="*">
+            <NoMatch />
+          </Route>
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>

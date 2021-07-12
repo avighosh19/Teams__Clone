@@ -138,7 +138,6 @@ const Chat = (props) => {
   }
   return (
     <div className="outerContainer">
-      Chat
       <div>
         <div className={classes.root}>
           {/* side drawer */}
@@ -173,7 +172,7 @@ const Chat = (props) => {
           </Drawer>
         </div>
       </div>
-      <div className="container">
+      <div className="containers">
         <Messages messages={messages} user_id={user._id} />
         <Input
           message={message}
@@ -182,13 +181,25 @@ const Chat = (props) => {
         />
       </div>
       <div className="Container2">
-        <h6>
-          Hi <b>{user.name}</b> Create the Meetings
-        </h6>
+        <div className="Container4">
+          <h6>
+            Hi <b>{user.name}</b> Create the Meetings
+          </h6>
+        </div>
+
         <br />
-        <button className="btn-made" onClick={create}>
-          Video Chat
-        </button>
+        <div className="Container3">
+          <div>
+            <button className="btn-made" onClick={create}>
+              Start Meet
+            </button>
+          </div>
+          <div>
+            <button className="btn-made" onClick={create}>
+              Join Meet
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

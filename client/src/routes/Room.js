@@ -1,9 +1,100 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import { useHistory, useLocation } from "react-router-dom";
 import Peer from "simple-peer";
 import styled from "styled-components";
 import "./rooms.css";
-import Chat from "../components/chat/Chat";
+const Page = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+
+  flex-direction: column;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 500px;
+  overflow: auto;
+  width: 100%;
+  border-right: 1px solid #7884ef;
+  border-left: 1px solid #7884ef;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-top: 25px;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  margin-top: 15px;
+  block: inline;
+  padding-top: 10px;
+  font-size: 17px;
+  background-color: transparent;
+  border-right: 1px solid #7884ef;
+  border-left: 1px solid #7884ef;
+  outline: none;
+  color: #fff;
+  letter-spacing: 1px;
+  line-height: 20px;
+  ::placeholder {
+    color: Chat;
+  }
+`;
+
+const Button = styled.button`
+  block: inline;
+  background-color: #7884ef;
+  border: none;
+  height: 40px;
+  align-items: center;
+  border-radius: 10px;
+  color: #46516e;
+  font-size: 17px;
+`;
+
+const Form = styled.form`
+  width: 38vmin;
+  height: 100px;
+  background-color: #464775;
+`;
+const MyRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
+const MyMessage = styled.div`
+  width: 45%;
+  background-color: #cdd1ff;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  margin-right: 5px;
+  text-align: center;
+  border-top-right-radius: 10%;
+  border-radius: 10px;
+`;
+const PartnerRow = styled(MyRow)`
+  justify-content: flex-start;
+`;
+const PartnerMessage = styled.div`
+  width: 45%;
+  background-color: transparent;
+  color: lightgray;
+  border: 1px solid lightgray;
+  padding: 10px;
+  margin-left: 5px;
+  text-align: center;
+  border-top-left-radius: 10%;
+  border-bottom-left-radius: 10%;
+`;
+
 const StyledVideo = styled.video`
   width: 25vw;
   height: 35vh;
@@ -33,13 +124,16 @@ let myVideoStream;
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-
+  let history = useHistory();
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
   const userStream = useRef();
   const senders = useRef([]);
+  const [yourID, setYourID] = useState();
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
 
   const [count, setCount] = useState(0);
 
@@ -63,9 +157,21 @@ const Room = (props) => {
               peer,
             });
 
-            peers.push(peer);
+            peers.push({
+              peerID: userID,
+              peer,
+            });
           });
           setPeers(peers);
+        });
+
+        socketRef.current.on("your id", (id) => {
+          setYourID(id);
+        });
+
+        socketRef.current.on("message", (message) => {
+          console.log("here");
+          receivedMessage(message);
         });
 
         socketRef.current.on("user joined", (payload) => {
@@ -74,16 +180,45 @@ const Room = (props) => {
             peerID: payload.callerID,
             peer,
           });
+          const peerObj = { peer, peerID: payload.callerID };
 
-          setPeers((users) => [...users, peer]);
+          setPeers((users) => [...users, peerObj]);
         });
 
         socketRef.current.on("receiving returned signal", (payload) => {
           const item = peersRef.current.find((p) => p.peerID === payload.id);
           item.peer.signal(payload.signal);
         });
+        socketRef.current.on("user left", (id) => {
+          const peerObj = peersRef.current.find((p) => p.peerID === id);
+          if (peerObj) {
+            peerObj.peer.destroy();
+          }
+
+          const peers = peersRef.current.filter((p) => p.peerID !== id);
+          peersRef.current = peers;
+          setPeers(peers);
+        });
       });
   }, []);
+
+  function receivedMessage(message) {
+    setMessages((oldMsgs) => [...oldMsgs, message]);
+  }
+
+  function sendMessage(e) {
+    e.preventDefault();
+    const messageObject = {
+      body: message,
+      id: yourID,
+    };
+    setMessage("");
+    socketRef.current.emit("send message", messageObject);
+  }
+
+  function handleChange(e) {
+    setMessage(e.target.value);
+  }
 
   function createPeer(userToSignal, callerID, stream) {
     const peer = new Peer({
@@ -209,9 +344,10 @@ const Room = (props) => {
         <div className="main__videos containerss">
           <div id="videoDiv">
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
-              return <Video key={index} peer={peer} />;
+            {peers.map((peer) => {
+              return <Video key={peer.peerID} peer={peer.peer} />;
             })}
+            .
           </div>
         </div>
         <div className=" main__controls">
@@ -255,33 +391,53 @@ const Room = (props) => {
             </div>
           </div>
           <div className="main__controls__block">
-            <div className="main__controls__button">
-              <div className="circle">
-                <span className="leave_meeting">
-                  <i className="fas fa-phone"></i>
-                </span>
-              </div>
+            <a href="/">
+              <div className="main__controls__button">
+                <div className="circle">
+                  <span className="leave_meeting">
+                    <i className="fas fa-phone"></i>
+                  </span>
+                </div>
 
-              <span>Leave</span>
-            </div>
+                <span>Leave</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
 
       <div className="main__right">
         <div className="main__header">
-          <h4>Chat</h4>
+          <ul>
+            <h4>Chat</h4>
+          </ul>
         </div>
-        <div className="main__chat_window">
-          <ul className="messages"></ul>
-        </div>
-        <div className="main__message_container">
-          <input
-            id="chat_message"
-            type="text"
-            placeholder="Type message here..."
-          />
-        </div>
+        <Page>
+          <Container>
+            {messages.map((message, index) => {
+              if (message.id === yourID) {
+                return (
+                  <MyRow key={index}>
+                    <MyMessage>{message.body}</MyMessage>
+                  </MyRow>
+                );
+              }
+              return (
+                <PartnerRow key={index}>
+                  <PartnerMessage>{message.body}</PartnerMessage>
+                </PartnerRow>
+              );
+            })}
+          </Container>
+          <Form onSubmit={sendMessage}>
+            <TextArea
+              value={message}
+              onChange={handleChange}
+              placeholder="Say something..."
+            />
+            <Button>Send</Button>
+          </Form>
+        </Page>
       </div>
     </div>
   );

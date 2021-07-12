@@ -105,7 +105,7 @@ const Home = () => {
       path: "/",
     },
     {
-      text: "Create Teams",
+      text: "Chat ",
       icon: <AddCircleIcon color="#CDCDCD" />,
       path: "/create",
     },
