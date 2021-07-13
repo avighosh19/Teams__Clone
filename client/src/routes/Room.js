@@ -425,9 +425,9 @@ const Room = (props) => {
             {messages.map((message, index) => {
               if (message.id === yourID) {
                 return (
-                  <MyRow key={index}>
+                  <MyRow1 key={index}>
                     <MyMessage1>{message.body}</MyMessage1>
-                  </MyRow>
+                  </MyRow1>
                 );
               }
               return (
