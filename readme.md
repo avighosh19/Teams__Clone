@@ -61,7 +61,7 @@ $ node server.js(backend)
 
 ## Deployed
 
-[Teams_clone](https://avipriyateamsclone.herokuapp.com/b) - Deployed app for teams
+[Teams_clone](https://avipriyateamsclone.herokuapp.com) - Deployed app for teams
 
 ## License
 
