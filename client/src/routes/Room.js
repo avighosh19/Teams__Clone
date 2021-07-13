@@ -64,13 +64,13 @@ const Form = styled.form`
   height: 100px;
   background-color: #464775;
 `;
-const MyRow = styled.div`
+const MyRow1 = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
 `;
-const MyMessage = styled.div`
+const MyMessage1 = styled.div`
   width: 45%;
   background-color: #cdd1ff;
   color: rgba(0, 0, 0, 0.6);
@@ -80,10 +80,10 @@ const MyMessage = styled.div`
   border-top-right-radius: 10%;
   border-radius: 10px;
 `;
-const PartnerRow = styled(MyRow)`
+const PartnerRow1 = styled(MyRow)`
   justify-content: flex-start;
 `;
-const PartnerMessage = styled.div`
+const PartnerMessage1 = styled.div`
   width: 45%;
   background-color: transparent;
   color: lightgray;
@@ -426,14 +426,14 @@ const Room = (props) => {
               if (message.id === yourID) {
                 return (
                   <MyRow key={index}>
-                    <MyMessage>{message.body}</MyMessage>
+                    <MyMessage1>{message.body}</MyMessage1>
                   </MyRow>
                 );
               }
               return (
-                <PartnerRow key={index}>
-                  <PartnerMessage>{message.body}</PartnerMessage>
-                </PartnerRow>
+                <PartnerRow1 key={index}>
+                  <PartnerMessage1>{message.body}</PartnerMessage1>
+                </PartnerRow1>
               );
             })}
           </Container>
