@@ -5,9 +5,7 @@ import io from "socket.io-client";
 import Messages from "./messages/Messages";
 import Input from "./input/Input";
 import "./Chat.css";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import MeetHead from "./MeetHead";
 import { makeStyles } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
@@ -114,6 +112,10 @@ const Chat = (props) => {
     },
   ];
 
+  const [Meeting, setMeeting] = useState({
+    meet: "",
+  });
+
   useEffect(() => {
     socket = io("/");
     socket.emit("join", { name: user.name, room_id, user_id: user._id });
@@ -129,6 +131,19 @@ const Chat = (props) => {
       setMessages(messages);
     });
   }, []);
+
+  useEffect(() => {
+    const savedMeet = JSON.parse(localStorage.getItem("createMeet"));
+
+    if (savedMeet) {
+      setMeeting(savedMeet);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("createMeet", JSON.stringify(Meeting));
+  }, [Meeting]);
+
   const sendMessage = (event) => {
     event.preventDefault();
     if (message) {
@@ -140,6 +155,15 @@ const Chat = (props) => {
     const id = room_id;
     props.history.push(`/video/room/${id}/${room_name}`);
   }
+
+  const addMeet = (text) => {
+    const newNote = {
+      meet: text,
+    };
+
+    const newMeet = [...Meeting, setMeeting];
+    setMeeting(newMeet);
+  };
   return (
     <div className="outerContainer">
       <div>
@@ -217,12 +241,13 @@ const Chat = (props) => {
           <div className="Container3">
             <div>
               <button className="btn-maded" onClick={create}>
-                Start Meet
+                Join Meet
               </button>
             </div>
+
             <div>
               <button className="btn-maded" onClick={create}>
-                Join Meet
+                Start Meet
               </button>
             </div>
           </div>

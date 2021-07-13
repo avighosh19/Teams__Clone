@@ -346,7 +346,7 @@ const Room = (props) => {
             />
           </div>
           <div className="meet_head_right">
-            <h3>Meet head</h3>
+            <h3>Welcome to Meeting</h3>
           </div>
         </div>
         <div className="main__videos contaiiinerss">

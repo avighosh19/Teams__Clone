@@ -269,7 +269,8 @@ const Home = () => {
             <p id="transition-modal-description">
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="input-field col s12">
+                  <div className=" col ">
+                    <label>Room</label>
                     <input
                       placeholder="Enter a room name"
                       id="room"
@@ -278,9 +279,11 @@ const Home = () => {
                       value={room}
                       onChange={(e) => setRoom(e.target.value)}
                     />
-                    <label htmlFor="room">Room</label>
                   </div>
-                  <div className="input-field col s12">
+
+                  <div className=" col ">
+                    <label>Description</label>
+                    <br />
                     <input
                       placeholder="Enter a description name"
                       id="room"
@@ -289,7 +292,6 @@ const Home = () => {
                       value={des}
                       onChange={(e) => setDes(e.target.value)}
                     />
-                    <label htmlFor="Description">Description</label>
                   </div>
                 </div>
                 <button className="btn">Create Room</button>
