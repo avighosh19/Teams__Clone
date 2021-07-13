@@ -129,6 +129,7 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
+  const roomName = props.match.params.roomName;
   const userStream = useRef();
   const senders = useRef([]);
   const [yourID, setYourID] = useState();
@@ -330,18 +331,25 @@ const Room = (props) => {
     document.querySelector(".main__video_button").innerHTML = html;
   };
 
+  function handleClick() {
+    history.push(`/chat/${roomID}/${roomName}`);
+  }
+
   return (
     <div className="mainss">
       <div className="main__left">
         <div className="meet_head">
           <div className="meet_head_left">
-            <h4>Teams</h4>
+            <img
+              className="teams___logo"
+              src="https://cdn.worldvectorlogo.com/logos/microsoft-teams.svg"
+            />
           </div>
           <div className="meet_head_right">
             <h3>Meet head</h3>
           </div>
         </div>
-        <div className="main__videos containerss">
+        <div className="main__videos contaiiinerss">
           <div id="videoDiv">
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
             {peers.map((peer) => {
@@ -383,7 +391,7 @@ const Room = (props) => {
               <span>Present</span>
             </div>
 
-            <div className="main__controls__button">
+            <div onClick={handleClick} className="main__controls__button">
               <div className="circle">
                 <i className="fas fa-comment-alt"></i>
               </div>

@@ -100,9 +100,9 @@ io.on("connection", (socket) => {
   Room.find().then((result) => {
     socket.emit("output-rooms", result);
   });
-  socket.on("create-room", (name) => {
+  socket.on("create-room", (name, description) => {
     // console.log('Then room name received is ', name)
-    const room = new Room({ name });
+    const room = new Room({ name: name, description: description });
     room.save().then((result) => {
       io.emit("room-created", result);
     });

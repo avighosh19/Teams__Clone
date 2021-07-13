@@ -8,7 +8,7 @@ import Home from "./components/home/Home";
 import Navbar from "./components/layout/Navbar";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
-
+import Notes from "./components/notes/Notecomp";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -29,7 +29,6 @@ function App() {
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
-        <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
 
@@ -39,7 +38,9 @@ function App() {
 
           <Route path="/login" component={Login} />
 
-          <Route path="/video/room/:roomID" component={Room} />
+          <Route path="/video/room/:roomID/:roomName" component={Room} />
+
+          <Route path="/notes" component={Notes} />
 
           <Route path="*">
             <NoMatch />

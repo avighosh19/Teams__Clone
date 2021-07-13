@@ -1,25 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
+import NotesList from "./NotesList";
+import Search from "./Search";
+
 import { UserContext } from "../../UserContext";
-import { Link, useParams } from "react-router-dom";
-import io from "socket.io-client";
-import Messages from "./messages/Messages";
-import Input from "./input/Input";
-import "./Chat.css";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import "./note.css";
 import { makeStyles } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import { useHistory, useLocation } from "react-router-dom";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PeopleIcon from "@material-ui/icons/People";
-import ChatIcon from "@material-ui/icons/Chat";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 
 const drawerWidth = 240;
@@ -38,6 +34,7 @@ const useStyles = makeStyles((theme) => {
 
       color: "white",
       boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 3, 3),
     },
     modal: {
       display: "flex",
@@ -51,6 +48,7 @@ const useStyles = makeStyles((theme) => {
     },
     title: {
       padding: theme.spacing(1),
+      paddingBottom: theme.spacing(3),
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -79,16 +77,14 @@ const useStyles = makeStyles((theme) => {
     },
   };
 });
-let socket;
-const Chat = (props) => {
-  const { user, setUser } = useContext(UserContext);
-  let { room_id, room_name, description } = useParams();
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [open, setOpen] = React.useState(false);
+
+const Notess = () => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
+
+  const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -103,9 +99,9 @@ const Chat = (props) => {
       path: "/",
     },
     {
-      text: "Chat",
-      icon: <ChatIcon color="#CDCDCD" />,
-      path: `/chat/${room_id}/${room_name}`,
+      text: "Create Teams",
+      icon: <AddCircleIcon color="#CDCDCD" />,
+      path: "/create",
     },
     {
       text: "Add Notes",
@@ -113,35 +109,63 @@ const Chat = (props) => {
       path: "/notes",
     },
   ];
+  const [notes, setNotes] = useState([
+    {
+      id: nanoid(),
+      text: "This is my first note!",
+      date: "15/04/2021",
+    },
+    {
+      id: nanoid(),
+      text: "This is my second note!",
+      date: "21/04/2021",
+    },
+    {
+      id: nanoid(),
+      text: "This is my third note!",
+      date: "28/04/2021",
+    },
+    {
+      id: nanoid(),
+      text: "This is my new note!",
+      date: "30/04/2021",
+    },
+  ]);
+
+  const [searchText, setSearchText] = useState("");
+
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    socket = io("/");
-    socket.emit("join", { name: user.name, room_id, user_id: user._id });
-  }, []);
-  useEffect(() => {
-    socket.on("message", (message) => {
-      setMessages([...messages, message]);
-    });
-  }, [messages]);
-  useEffect(() => {
-    socket.emit("get-messages-history", room_id);
-    socket.on("output-messages", (messages) => {
-      setMessages(messages);
-    });
-  }, []);
-  const sendMessage = (event) => {
-    event.preventDefault();
-    if (message) {
-      console.log(message);
-      socket.emit("sendMessage", message, room_id, () => setMessage(""));
+    const savedNotes = JSON.parse(localStorage.getItem("react-notes-app-data"));
+
+    if (savedNotes) {
+      setNotes(savedNotes);
     }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("react-notes-app-data", JSON.stringify(notes));
+  }, [notes]);
+
+  const addNote = (text) => {
+    const date = new Date();
+    const newNote = {
+      id: nanoid(),
+      text: text,
+      date: date.toLocaleDateString(),
+    };
+    const newNotes = [...notes, newNote];
+    setNotes(newNotes);
   };
-  function create() {
-    const id = room_id;
-    props.history.push(`/video/room/${id}/${room_name}`);
-  }
+
+  const deleteNote = (id) => {
+    const newNotes = notes.filter((note) => note.id !== id);
+    setNotes(newNotes);
+  };
+
   return (
-    <div className="outerContainer">
+    <div className="container">
       <div>
         <div className={classes.root}>
           {/* side drawer */}
@@ -151,7 +175,7 @@ const Chat = (props) => {
             classes={{ paper: classes.drawerPaper }}
             anchor="left"
           >
-            <div className="img_title__box">
+            <div className="img_title_box">
               <div>
                 <img
                   className="teams____logo"
@@ -181,55 +205,19 @@ const Chat = (props) => {
             </List>
           </Drawer>
         </div>
-      </div>
-      <div className="containeers">
-        <div className="Chat__head_name">
-          <span>{room_name}</span>
-          <a href="/">
-            <i class="fas fa-sign-out-alt"></i>
-          </a>
-        </div>
-        <Messages messages={messages} user_id={user._id} />
-        <Input
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
+        <br />
+        <Search handleSearchNote={setSearchText} />
+        <br />
+        <NotesList
+          notes={notes.filter((note) =>
+            note.text.toLowerCase().includes(searchText)
+          )}
+          handleAddNote={addNote}
+          handleDeleteNote={deleteNote}
         />
-      </div>
-      <div className="box1">
-        <div className="box1__up">
-          <div className="head__avatar">
-            <i class="fas fa-user-tie"></i>
-          </div>
-          <b> {user.name} </b>
-        </div>
-        <br />
-        <br />
-
-        <div className="Container2">
-          <br />
-
-          <div className="Container4">
-            <h5> Create the Meetings</h5>
-          </div>
-
-          <br />
-          <div className="Container3">
-            <div>
-              <button className="btn-maded" onClick={create}>
-                Start Meet
-              </button>
-            </div>
-            <div>
-              <button className="btn-maded" onClick={create}>
-                Join Meet
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Chat;
+export default Notess;

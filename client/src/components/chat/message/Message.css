@@ -2,45 +2,29 @@
   font-size: 1rem;
   position: relative;
   display: inline-block;
-  padding: 1.5rem;
-  background: #1f5e99;
+  padding: 0.9rem 1.2rem;
+  border-radius: 20px;
+  background: #13145c;
   color: #f6f6f6;
   -webkit-animation: bounce-in 1s 1;
   animation: bounce-in 1s 1;
   -webkit-transform-origin: left bottom;
   transform-origin: left bottom;
 }
-.opponent:after {
-  top: 88%;
-  left: 0;
-  position: absolute;
-  content: "";
-  border: 1.5rem solid;
-  border-color: #1f5e99cc transparent transparent rgba(168, 173, 231, 0.651);
-}
 
 .sentbyme {
   font-size: 1rem;
   position: relative;
   display: inline-block;
-  padding: 1.5rem;
-  background: #62bcd3;
-  color: #f6f6f6;
+  padding: 0.9rem 1.2rem;
+  border-radius: 20px;
+  background: #dedee4;
+  color: #0c0c0c;
   -webkit-animation: bounce-in 1s 1;
   animation: bounce-in 1s 1;
 
   -webkit-transform-origin: right top;
   transform-origin: right top;
-}
-.sentbyme:after {
-  top: -35%;
-  left: auto;
-  position: absolute;
-  content: "";
-  border: 1.5rem solid;
-  border-color: transparent #62bcd3d0 #60b6cee8 transparent;
-
-  right: 0;
 }
 
 @-webkit-keyframes bounce-in {

@@ -9,42 +9,95 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #fff;
 }
 .Container2 {
   border-left: 1px solid #c4c5c9;
-  height: 100vh;
-  width: 20%;
+  height: 85vh;
+  box-shadow: 2px 2px 2px 2px #b4b6cb;
+  border-radius: 50px;
+  background: #f4f4fa;
+}
+
+.box1__up {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: right;
+  padding-right: 15px;
+}
+
+.box1__up > .head__avatar {
+  border-radius: 50%;
+  margin-left: 5px;
+  background: #4d5297;
+}
+
+.head__avatar > i {
+  font-size: 20px;
+  color: rgb(193, 193, 221);
+  padding: 5px;
+}
+
+.Chat__head_name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  background-color: #eeeef6;
+  border: 1px solid #cdd1ff8a;
+  padding: 5px;
+  margin-left: 4px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px 2px #b4b6cb;
+}
+
+.Chat__head_name > span {
+  padding: 0px 14px;
+  font-size: 35px;
+}
+
+.Chat__head_name > a > i {
+  padding: 0px 10px;
+  font-size: 25px;
 }
 
 .Container4 {
-  margin-left: 20%;
+  align-items: center;
+  text-align: center;
+  padding: 0px 15px;
 }
 
 .Container3 {
   display: flex;
 
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-
-  margin-left: 20%;
 }
 
-.containers {
+.containeers {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background: #ffffff;
-  margin-right: 5%;
   border-radius: 15px;
-  height: 90%;
-  width: 100%;
+  height: 100%;
+  margin-right: 25px;
+  width: 65%;
+
+  border-left: 0.5px solid rgba(204, 204, 204, 0.452);
 }
 
-.btn-made {
+.btn-maded {
   align-items: center;
-  height: 6vmin;
+  padding: 10px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 400;
   margin-left: 10px;
+}
+
+.img_title__box {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
@@ -52,7 +105,7 @@ body {
     height: 100%;
   }
 
-  .container {
+  .containeers {
     width: 100%;
     height: 100%;
   }

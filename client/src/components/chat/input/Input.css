@@ -1,32 +1,30 @@
 .form {
   display: flex;
-
-  border-top: 2px solid #d3d3d3;
+  flex-direction: row;
   background-color: #fafafa;
   height: 15vmin;
 }
 
-.input {
-  border: none;
+.inputsss {
+  border: 1px solid #b4b6cb;
   border-radius: 0;
   padding: 5%;
   width: 60%;
   font-size: 1.2em;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
-
 .sendButton {
   color: #fff !important;
   text-transform: uppercase;
+  border-radius: 50%;
   text-decoration: none;
-  background: #2979ff;
+  background: #dedee4;
   padding: 20px;
   display: inline-block;
   border: none;
-  width: 20%;
+}
+
+.sendButton > i {
+  color: #585d92;
+  font-size: 15px;
 }

@@ -17,10 +17,15 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PeopleIcon from "@material-ui/icons/People";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import { format } from "date-fns";
 import Avatar from "@material-ui/core/Avatar";
+
+import SignedInMenu from "../layout/SignedInMenu";
+import SignedOutMenu from "../layout/SignedOutMenu";
 
 const drawerWidth = 240;
 
@@ -38,7 +43,7 @@ const useStyles = makeStyles((theme) => {
 
       color: "white",
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: theme.spacing(2, 3, 3),
     },
     modal: {
       display: "flex",
@@ -48,9 +53,10 @@ const useStyles = makeStyles((theme) => {
     active: {
       background: "#8D8C8C",
       marginTop: 22,
+      borderRadius: 8,
     },
     title: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -87,6 +93,7 @@ const Home = () => {
   const location = useLocation();
   const { user, setUser } = useContext(UserContext);
   const [room, setRoom] = useState("");
+  const [des, setDes] = useState();
   const [rooms, setRooms] = useState([]);
 
   const [open, setOpen] = React.useState(false);
@@ -98,18 +105,7 @@ const Home = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const menuItems = [
-    {
-      text: "Teams",
-      icon: <PeopleIcon color="#CDCDCD" />,
-      path: "/",
-    },
-    {
-      text: "Chat ",
-      icon: <AddCircleIcon color="#CDCDCD" />,
-      path: "/create",
-    },
-  ];
+
   useEffect(() => {
     socket = io("/");
     return () => {
@@ -131,12 +127,52 @@ const Home = () => {
     console.log(rooms);
   }, [rooms]);
 
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setRoom({
+      ...room,
+      [evt.target.name]: value,
+    });
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    socket.emit("create-room", room);
+    socket.emit("create-room", room, des);
     console.log(room);
     setRoom("");
+    setDes("");
   };
+  const logout = async () => {
+    try {
+      const res = await fetch("/logout", {
+        credentials: "include",
+      });
+      const data = res.json();
+      console.log("logout data", data);
+      setUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const menu = user ? <SignedInMenu logout={logout} /> : <SignedOutMenu />;
+
+  const menuItems = [
+    {
+      text: "Teams",
+      icon: <PeopleIcon color="white" />,
+      path: "/",
+    },
+    {
+      text: "Create Teams",
+      icon: <AddCircleIcon color="white" />,
+      path: "/create",
+    },
+    {
+      text: "Add Notes",
+      icon: <NoteAddIcon color="white" />,
+      path: "/notes",
+    },
+  ];
 
   if (!user) {
     return <Redirect to="/login" />;
@@ -168,7 +204,14 @@ const Home = () => {
           classes={{ paper: classes.drawerPaper }}
           anchor="left"
         >
-          <div>
+          <div className="img_title_box">
+            <div>
+              <img
+                className="teams____logo"
+                src="https://cdn.worldvectorlogo.com/logos/microsoft-teams.svg"
+              />
+            </div>
+
             <Typography variant="h5" className={classes.title}>
               Teams
             </Typography>
@@ -189,10 +232,17 @@ const Home = () => {
                 <ListItemText primary={item.text} />
               </ListItem>
             ))}
+            <ListItem onClick={logout}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="logout" />
+            </ListItem>
           </List>
         </Drawer>
       </div>
-
+      <br />
+      <br />
       <Button
         variant="outlined"
         type="button"
@@ -230,6 +280,17 @@ const Home = () => {
                     />
                     <label htmlFor="room">Room</label>
                   </div>
+                  <div className="input-field col s12">
+                    <input
+                      placeholder="Enter a description name"
+                      id="room"
+                      type="text"
+                      className="validate"
+                      value={des}
+                      onChange={(e) => setDes(e.target.value)}
+                    />
+                    <label htmlFor="Description">Description</label>
+                  </div>
                 </div>
                 <button className="btn">Create Room</button>
               </form>
@@ -238,7 +299,7 @@ const Home = () => {
         </Fade>
       </Modal>
       <br />
-      <div className="container">
+      <div className="containerss">
         <RoomList rooms={rooms} />
       </div>
     </div>
