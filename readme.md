@@ -72,8 +72,8 @@ MIT
 > [avipriya ](avipriyoghosh123@gmail.com) &nbsp;&middot;&nbsp;
 > GitHub [@avighosh19](https://github.com/avighosh19/) &nbsp;&middot;&nbsp;
 
-<h1 align="center">
+<h4 align="center">
  
 Created with  love  By Avipriya Ghosh
 
-</h1>
+</h4>
