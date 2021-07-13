@@ -80,7 +80,7 @@ const MyMessage1 = styled.div`
   border-top-right-radius: 10%;
   border-radius: 10px;
 `;
-const PartnerRow1 = styled(MyRow)`
+const PartnerRow1 = styled(MyRow1)`
   justify-content: flex-start;
 `;
 const PartnerMessage1 = styled.div`
